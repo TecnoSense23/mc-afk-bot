@@ -10,8 +10,8 @@ app.listen(port, () => console.log('Web server running.'));
 // 2. This creates the Minecraft bot
 function createBot() {
     const bot = mineflayer.createBot({
-        host: 'YOUR_SERVER_IP', 
-        port: 25565,            // Leave as 25565 unless your server provides a specific port
+        host: 'Tecnosense.aternos.me', 
+        port: 62972,            // Leave as 25565 unless your server provides a specific port
         username: 'AFK_Bot_Pro',
         version: false,         // Auto-detects your server's Minecraft version
         auth: 'offline'         // Essential so it doesn't ask for a Microsoft login
