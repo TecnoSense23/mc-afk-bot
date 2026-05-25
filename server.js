@@ -2,50 +2,49 @@ const mineflayer = require('mineflayer');
 const express = require('express');
 const app = express();
 
-// The mini web server to keep things awake
+// 1. Web server to keep Render awake
 app.get('/', (req, res) => res.send('Bot is awake!'));
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Web server running.'));
 
+// 2. Crash Prevention Safety Net
+process.on('uncaughtException', (err) => console.log('Caught exception:', err));
+process.on('unhandledRejection', (err) => console.log('Unhandled rejection:', err));
+
+// 3. The Minecraft Bot
 function createBot() {
     const bot = mineflayer.createBot({
         host: 'Tecnosense.aternos.me', 
-        port: 62972,
+        port: 25565,
         username: 'AFK_Bot_Pro',
-        version: false,
-        auth: 'offline'
+        auth: 'offline',
+        
+        // ---> CHANGE THIS TO YOUR EXACT MINECRAFT VERSION <---
+        // Keep the quote marks around the numbers!
+        version: '1.20.4' 
     });
 
-    bot.on('login', () => console.log('Bot joined the server!'));
+    bot.on('login', () => console.log('✅ Bot successfully joined the server!'));
     
-    // --- NEW ANTI-AFK MOVEMENT ---
+    // Anti-AFK Movement
     bot.on('spawn', () => {
-        console.log('Bot is in the world! Starting movement.');
-        
-        // This timer runs every 30,000 milliseconds (30 seconds)
+        console.log('Bot is in the world! Starting random movement.');
         setInterval(() => {
-            // 1. Look in a random direction
             const randomYaw = Math.random() * Math.PI * 2;
             bot.look(randomYaw, 0, true);
-            
-            // 2. Press the jump key
             bot.setControlState('jump', true);
-            
-            // 3. Let go of the jump key after half a second
-            setTimeout(() => {
-                bot.setControlState('jump', false);
-            }, 500);
-            
+            setTimeout(() => bot.setControlState('jump', false), 500);
         }, 30000); 
     });
-    // -----------------------------
     
-    bot.on('end', () => {
-        console.log('Bot disconnected. Reconnecting in 10 seconds...');
+    // Auto-Reconnect
+    bot.on('end', (reason) => {
+        console.log('Bot disconnected because:', reason);
+        console.log('Reconnecting in 10 seconds...');
         setTimeout(createBot, 10000);
     });
     
-    bot.on('error', err => console.log('Error:', err));
+    bot.on('error', err => console.log('Bot Error:', err));
 }
 
 createBot();
