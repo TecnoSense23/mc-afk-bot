@@ -18,7 +18,7 @@ function createBot() {
         auth: 'offline',
         
         // The magic fix for your specific server
-        version: '26.1.2' 
+        version: '1.20.4' 
     });
 
     bot.on('login', () => console.log('✅ Bot successfully joined the server!'));
