@@ -14,8 +14,8 @@ process.on('unhandledRejection', (err) => console.log('Unhandled rejection:', er
 // 3. The Minecraft Bot
 function createBot() {
     const bot = mineflayer.createBot({
-        host: 'Tecnosense.aternos.me', 
-        port: 25565,
+        host: 'batray.aternos.host:62972', 
+        port: 62972,
         username: 'AFK_Bot_Pro',
         auth: 'offline',
         
